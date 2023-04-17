@@ -4,11 +4,11 @@ from tensorflow import keras
 import keras_nlp
 import numpy as np
 from tensorflow.keras.callbacks import ModelCheckpoint
-from sinhala_text_processor import clean_text_corpus, tokenize, \
+from ..sinhala_preprocessor.sinhala_text_processor import clean_text_corpus, tokenize, \
     clean_tokenized_text_list, custom_standardization
 from tensorflow.keras.layers import TextVectorization
 import random
-import constants
+from ..util import constants
 import joblib
 
 with open(constants.DATA_FILE, encoding='utf-8') as f:
