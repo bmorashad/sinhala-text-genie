@@ -146,4 +146,4 @@ model.save(constants.MODEL_FILE)
 pickle.dump({'config': vectorize_layer.get_config(),
              'weights': vectorize_layer.get_weights()}
             , open(constants.VECTORIZER_FILE, "wb"))
-index_lookup = joblib.dump(index_lookup, constants.INDEX_LOOKUP_FILE)
+joblib.dump(constants.INDEX_LOOKUP_FILE, index_lookup)

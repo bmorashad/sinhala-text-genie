@@ -73,7 +73,6 @@ def clean_and_tokenize_to_sentences(texts):
     text_list = list(filter(None, text_list))
     # Remove lines that are likely not meaningful: those with less than one word or less than eight characters.
     text_list = list(filter(lambda line: (len(line.strip().split(" ")) > 1 and len(line) > 7), text_list))
-    text_list = [re.sub(r'\n', '', line) for line in text_list]
     return text_list
 
 

@@ -1,2 +1,6 @@
 .idea
+language-model/model/model_3k
+__test__**
+language-model/model/model_old
+language-model/model/model_old/index_lookup.joblib
 __pycache__
