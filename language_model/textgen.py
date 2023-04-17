@@ -7,10 +7,10 @@ import numpy as np
 from tensorflow.keras.models import load_model
 import joblib
 from tensorflow.keras.layers import TextVectorization
-from language_model.util import constants
+from util import constants
 import pickle
 import keras_nlp
-from language_model.sinhala_preprocessor.sinhala_text_processor import custom_standardization
+from sinhala_preprocessor.sinhala_text_processor import custom_standardization
 
 
 class PredictionMode(Enum):
