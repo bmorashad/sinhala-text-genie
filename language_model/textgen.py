@@ -6,7 +6,7 @@ from tensorflow import keras
 import numpy as np
 from tensorflow.keras.models import load_model
 import joblib
-from sinhala_text_clean import custom_standardization
+from sinhala_text_processor import custom_standardization
 from tensorflow.keras.layers import TextVectorization
 import constants
 import pickle

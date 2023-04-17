@@ -1,37 +1,38 @@
 import pickle
-import joblib
 import tensorflow as tf
 from tensorflow import keras
 import keras_nlp
 import numpy as np
-import re
-from sinhala_text_clean import clean_and_tokenize_to_sentences, custom_standardization
-from tensorflow.keras.layers import TextVectorization
 from tensorflow.keras.callbacks import ModelCheckpoint
+from sinhala_text_processor import clean_text_corpus, tokenize, \
+    clean_tokenized_text_list, custom_standardization
+from tensorflow.keras.layers import TextVectorization
 import random
 import constants
+import joblib
 
 with open(constants.DATA_FILE, encoding='utf-8') as f:
     texts = f.read()
 
-text_list = clean_and_tokenize_to_sentences(texts)
+texts = clean_text_corpus(texts)
+text_list = tokenize(texts)
 # Due to hardware limitation limiting the corpus size
 text_list = text_list[:250000]
-
-# random.shuffle(text_list)
+text_list = clean_tokenized_text_list(text_list)
 
 length = len(text_list)
 text_train = text_list[:int(0.7 * length)]
 text_test = text_list[int(0.7 * length):int(0.85 * length)]
 text_valid = text_list[int(0.85 * length):]
 
-# print(text_train[:100])
+maxlen = constants.MAX_LEN
 
 vectorize_layer = TextVectorization(
     standardize=custom_standardization,
     output_mode="int",
-    output_sequence_length=constants.MAX_LEN + 1,
+    output_sequence_length=maxlen + 1,
 )
+
 vectorize_layer.adapt(text_list)
 vocab = vectorize_layer.get_vocabulary()
 
@@ -79,11 +80,11 @@ num_heads = 4
 
 
 def create_model():
-    inputs = keras.layers.Input(shape=(constants.MAX_LEN,), dtype=tf.int32)
-    x = keras_nlp.layers.TokenAndPositionEmbedding(vocab_size, constants.MAX_LEN, embed_dim)(inputs)
+    inputs = keras.layers.Input(shape=(maxlen,), dtype=tf.int32)
+    x = keras_nlp.layers.TokenAndPositionEmbedding(vocab_size, maxlen, embed_dim)(inputs)
     for i in range(5):
         x = keras_nlp.layers.TransformerDecoder(intermediate_dim=embed_dim * 2, num_heads=num_heads, dropout=0.5)(x)
-    do = keras.layers.Dropout(0.4)(x)
+    do = keras.layers.Dropout(0.2)(x)
     outputs = keras.layers.Dense(vocab_size, activation='softmax')(do)
 
     model = keras.Model(inputs=inputs, outputs=outputs)
@@ -93,8 +94,6 @@ def create_model():
         metrics=[keras_nlp.metrics.Perplexity(), 'accuracy']
     )
     return model
-
-
 
 
 class TextSampler(keras.callbacks.Callback):
@@ -133,9 +132,7 @@ class TextSampler(keras.callbacks.Callback):
 # First 5 words of a random sentence to be used as a seed
 random_sentence = ' '.join(random.choice(text_valid).replace('\n', ' ').split(' ')[:4])
 sampler = TextSampler(random_sentence, 10)
-path_to_model_checkpoint = constants.MODEL_CHECKPOINT_FILE
-checkpoint = ModelCheckpoint(path_to_model_checkpoint, save_weights_only=True,
-                             verbose=1, period=3)
+checkpoint = ModelCheckpoint(constants.MODEL_CHECKPOINT_FILE, save_weights_only=True, verbose=1, period=3)
 reducelr = keras.callbacks.ReduceLROnPlateau(patience=10, monitor='val_loss')
 
 model = create_model()

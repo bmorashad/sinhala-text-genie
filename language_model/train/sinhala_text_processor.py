@@ -56,7 +56,7 @@ def remove_number(text):
     return re.sub('[0-9]+', '', text)
 
 
-def clean_and_tokenize_to_sentences(texts):
+def clean_text_corpus(texts):
     texts = normalize_text(texts)
     texts = clean_special_chars(texts)
     texts = remove_extra_puntuations(texts)
@@ -65,14 +65,19 @@ def clean_and_tokenize_to_sentences(texts):
     texts = remove_space_before_puntuation(texts)
     texts = add_space_after_puntuation(texts)
     texts = remove_extra_spaces(texts)
-    text_list = texts.split('.')
+    return texts
+
+def tokenize(texts):
+    text_list = texts.split(".")
+    return text_list
+
+def clean_tokenized_text_list(text_list):
     text_list = [line.strip() for line in text_list]
-    # remove whitespaces and empty lines
     text_list = [line for line in text_list if line.strip()]
     text_list = [remove_lone_puntuations(line) for line in text_list]
     text_list = list(filter(None, text_list))
-    # Remove lines that are likely not meaningful: those with less than one word or less than eight characters.
-    text_list = list(filter(lambda line: (len(line.strip().split(" ")) > 1 and len(line) > 7), text_list))
+    text_list = list(filter(lambda x: (len(x.strip().split(" ")) > 1 and len(x) > 7), text_list))
     return text_list
+
 
 
