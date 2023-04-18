@@ -68,19 +68,19 @@ def _sample_token(logits):
 @validate_prompt
 def _generate_text(prompt, response_length):
     decoded_sample = prompt
+    generated_text = prompt
     for i in range(response_length - 1):
-        trimmed_word_count = 0
         tokenized_prompt = vectorize_layer([decoded_sample])[:, :-1]
         predictions = model.predict([tokenized_prompt], verbose=0)
         sample_index = len(decoded_sample.strip().split()) - 1
         sampled_token = _sample_token(predictions[0][sample_index])
         sampled_token = index_lookup[sampled_token]
         decoded_sample += " " + sampled_token
+        generated_text += " " + sampled_token
         # This is because N is the max len of prompt, anything exceeds that will result in error
-        if count_words(decoded_sample) == 15:
-            trimmed_word_count += 1
+        if count_words(decoded_sample) == constants.MAX_LEN:
             decoded_sample = trim_start_of_line(decoded_sample, 1)
-    return detokenize(tokenize_line(prompt)[:trimmed_word_count]) + " " + decoded_sample
+    return generated_text
 
 
 def generate_text(prompt, num_of_text=1, response_length=15):
