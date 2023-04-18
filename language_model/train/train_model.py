@@ -4,7 +4,7 @@ from tensorflow import keras
 import keras_nlp
 import numpy as np
 from tensorflow.keras.callbacks import ModelCheckpoint
-from ..sinhala_preprocessor.sinhala_text_processor import clean_text_corpus, tokenize, \
+from ..sinhala_nlp.preprocessor import clean_text_corpus, tokenize, \
     clean_tokenized_text_list, custom_standardization
 from tensorflow.keras.layers import TextVectorization
 import random
@@ -143,4 +143,4 @@ model.save(constants.MODEL_FILE)
 pickle.dump({'config': vectorize_layer.get_config(),
              'weights': vectorize_layer.get_weights()}
             , open(constants.VECTORIZER_FILE, "wb"))
-joblib.dump(constants.INDEX_LOOKUP_FILE, index_lookup)
+joblib.dump(index_lookup, constants.INDEX_LOOKUP_FILE)

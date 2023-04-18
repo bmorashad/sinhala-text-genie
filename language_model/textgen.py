@@ -7,11 +7,12 @@ import numpy as np
 from tensorflow.keras.models import load_model
 import joblib
 from tensorflow.keras.layers import TextVectorization
-from util import constants
+from language_model.util import constants
 import pickle
 import keras_nlp
-from sinhala_preprocessor.sinhala_text_processor import custom_standardization
-
+from language_model.sinhala_nlp.preprocessor import custom_standardization
+import importlib.util
+import os
 
 class PredictionMode(Enum):
     DIVERSE = "diverse"
@@ -21,6 +22,8 @@ class PredictionMode(Enum):
 def tokenize_line(line):
     return line.split(" ")
 
+def detokenize(word_list):
+    return " ".join(word_list)
 
 def count_words(line):
     return len(tokenize_line(line))
@@ -36,7 +39,6 @@ def trim_prompt_to_max_len(prompt):
         count_diff = word_count - 15
         prompt = trim_start_of_line(prompt, count_diff + 1)
     return prompt
-
 
 index_lookup = joblib.load(constants.INDEX_LOOKUP_FILE)
 model = load_model(constants.MODEL_FILE)
@@ -67,16 +69,21 @@ def _sample_token(logits):
 def _generate_text(prompt, response_length):
     decoded_sample = prompt
     for i in range(response_length - 1):
+        trimmed_word_count = 0
         tokenized_prompt = vectorize_layer([decoded_sample])[:, :-1]
         predictions = model.predict([tokenized_prompt], verbose=0)
         sample_index = len(decoded_sample.strip().split()) - 1
         sampled_token = _sample_token(predictions[0][sample_index])
         sampled_token = index_lookup[sampled_token]
         decoded_sample += " " + sampled_token
-    return decoded_sample
+        # This is because N is the max len of prompt, anything exceeds that will result in error
+        if count_words(decoded_sample) == 15:
+            trimmed_word_count += 1
+            decoded_sample = trim_start_of_line(decoded_sample, 1)
+    return detokenize(tokenize_line(prompt)[:trimmed_word_count]) + " " + decoded_sample
 
 
-def generate_text(prompt, response_length=15, num_of_text=1):
+def generate_text(prompt, num_of_text=1, response_length=15):
     generated_text_list = []
     for i in range(num_of_text):
         text = _generate_text(prompt, response_length)
@@ -107,8 +114,8 @@ def predict_next_words(prompt: str, num_of_words=3, prediction_mode=PredictionMo
 
 
 @validate_prompt
-def predict_next_word_pair(prompt: str, num_of_words=3, prediction_mode=PredictionMode.CONSISTENT,
-                           diversity_level=50) -> List[str]:
+def predict_next_word_pairs(prompt: str, num_of_words=3, prediction_mode=PredictionMode.CONSISTENT,
+                            diversity_level=50) -> List[str]:
     if isinstance(prediction_mode, str):
         prediction_mode = PredictionMode(prediction_mode)
     top_first_words = predict_next_words(prompt, num_of_words, prediction_mode)
@@ -133,10 +140,10 @@ if __name__ == "__main__":
             print("Exiting...")
             break
         validate_prompt(text)
-        print("Predicted words", predict_next_words(text, 5))
+        print("Predicted words", predict_next_words(text, 25))
         print("Predicted diverse words", predict_next_words(text, 5, PredictionMode.DIVERSE))
         print("==================================================================================")
-        print("Predicted word pair", predict_next_word_pair(text, 5, PredictionMode.CONSISTENT))
-        print("Predicted diverse word pair", predict_next_word_pair(text, 5, PredictionMode.DIVERSE))
+        print("Predicted word pair", predict_next_word_pairs(text, 5, PredictionMode.CONSISTENT))
+        print("Predicted diverse word pair", predict_next_word_pairs(text, 5, PredictionMode.DIVERSE))
         print("==================================================================================")
         print("Text generation", generate_text(text, 10))
