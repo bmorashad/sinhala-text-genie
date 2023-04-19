@@ -14,7 +14,7 @@ from language_model.sinhala_nlp.preprocessor import custom_standardization
 import importlib.util
 import os
 
-class PredictionMode(Enum):
+class PredictionMode:
     DIVERSE = "diverse"
     CONSISTENT = "consistent"
 
@@ -94,8 +94,6 @@ def generate_text(prompt, num_of_text=1, response_length=15):
 @validate_prompt
 def predict_next_words(prompt: str, num_of_words=3, prediction_mode=PredictionMode.CONSISTENT,
                        diversity_level=50) -> List[str]:
-    if isinstance(prediction_mode, str):
-        prediction_mode = PredictionMode(prediction_mode)
     tokenized_prompt = vectorize_layer([prompt])[:, :-1]
     predictions = model.predict([tokenized_prompt], verbose=0)
     sample_index = len(prompt.strip().split()) - 1
@@ -116,8 +114,6 @@ def predict_next_words(prompt: str, num_of_words=3, prediction_mode=PredictionMo
 @validate_prompt
 def predict_next_word_pairs(prompt: str, num_of_words=3, prediction_mode=PredictionMode.CONSISTENT,
                             diversity_level=50) -> List[str]:
-    if isinstance(prediction_mode, str):
-        prediction_mode = PredictionMode(prediction_mode)
     top_first_words = predict_next_words(prompt, num_of_words, prediction_mode)
     top_word_pairs = []
     for word in top_first_words:

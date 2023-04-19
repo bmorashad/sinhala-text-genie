@@ -8,6 +8,7 @@ router = APIRouter()
 
 
 @router.get("/textgen")
-async def generate_texts(prompt: str, max_gen_len: int = 10, max_num_of_generations: int = 1) -> TextGenResponse:
+async def generate_texts(prompt: str, max_gen_length: int = 10,
+                         max_num_of_generations: int = 1) -> TextGenResponse:
     # generate_texts: List[str] = generate_text(prompt)
     return TextGenResponse()

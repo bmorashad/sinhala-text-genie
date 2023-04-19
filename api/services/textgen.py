@@ -2,7 +2,7 @@ from typing import List
 from language_model.textgen import predict_next_words, PredictionMode, \
     predict_next_word_pairs, generate_text
 
-def get_next_words(prompt: str, max_prediction_len=3,
+def get_next_words(prompt: str, max_num_of_words=3,
                    prediction_mode=PredictionMode.CONSISTENT, diversity_level=50) -> List[str]:
     next_words: List[str] = predict_next_words(prompt, max_prediction_len, prediction_mode, diversity_level)
     return next_words
