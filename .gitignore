@@ -1,5 +1,6 @@
 .idea
 language-model/model/model_3k
+language-model/model/model0.2
 __test__**
 language-model/model/model_old
 language-model/model/model_old/index_lookup.joblib

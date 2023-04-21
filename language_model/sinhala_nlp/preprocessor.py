@@ -1,11 +1,6 @@
 import unicodedata
 import re
-# import tensorflow as tf
 
-
-# def custom_standardization(input_string):
-#     sentence = tf.strings.regex_replace(input_string, "\n", " ")
-#     return sentence
 def normalize_text(text):
     return unicodedata.normalize('NFKD', text)
 
