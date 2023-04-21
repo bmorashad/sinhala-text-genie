@@ -55,8 +55,6 @@ export default function TextGenerator() {
                 {/*<Divider my="xs" />*/}
                 <Space h="md"/>
                 <Paper shadow="xs" p="md" withBorder>
-                    {/*<Space h="xs"/>*/}
-                    <Space h="sm"/>
                     <SimpleGrid cols={3}>
                         <div>
                             <Text fw={500} size="sm"
@@ -65,7 +63,7 @@ export default function TextGenerator() {
                             <Space h={4}/>
                             <Slider
                                 // sx={{"width": "100%"}}
-                                defaultValue={3}
+                                defaultValue={15}
                                 size="sm"
                                 thumbSize={18}
                                 radius="xs"
@@ -74,7 +72,7 @@ export default function TextGenerator() {
                                 marks={[
                                     { value: 25},
                                 ]}
-                                color={"green"}
+                                color={"blue"}
                             />
                         </div>
                     </SimpleGrid>

@@ -75,10 +75,12 @@ export default function Shell(props) {
                                 mr="xl"
                             />
                         </MediaQuery>
-                        <Group>
-                            <Avatar radius="xs" src={logo} alt="logo"/>
-                            <Text color="blue.9" order={4} fw={700}>SinhalaTextGenie</Text>
-                        </Group>
+                        <Link to={"/"}>
+                            <Group>
+                                <Avatar radius="xs" src={logo} alt="logo"/>
+                                <Text color="blue.9" order={4} fw={700}>SinhalaTextGenie</Text>
+                            </Group>
+                        </Link>
 
                     </div>
                 </Header>
