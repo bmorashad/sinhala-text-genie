@@ -4,6 +4,8 @@ import './App.css'
 import {AppShell, MantineProvider, Navbar} from '@mantine/core'
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Shell from "./components/app_shell/Shell.jsx";
+import TextGenerator from "./pages/textgen/Text Generator.jsx";
+import WordPredictor from "./pages/wordpredictor/WordPredictor.jsx";
 
 
 function App() {
@@ -17,11 +19,12 @@ function App() {
                 <Routes>
         <Route path="/">
 
-            <Route index element={<Shell/>}/>
-                <Route path="home" element={<Shell/>}/>
+            {/*<Route index element={<Shell/>}/>*/}
+            <Route path="nextword" element={<Shell><WordPredictor/></Shell>}/>
+            <Route path="textgen" element={<Shell><TextGenerator/></Shell>}/>
 
-
-                </Route></Routes>
+                </Route>
+                    </Routes>
             </Router>
         </MantineProvider>
     )
