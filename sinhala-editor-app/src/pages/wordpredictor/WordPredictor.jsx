@@ -20,20 +20,7 @@ import AutoCompleteWriter from "./tools/autocomplete/AutoCompleteWriter.jsx";
 
 export default function WordPredictor() {
     return (
-        <Tabs defaultValue="generator" color={"pink"}>
-            <Tabs.List>
-                <Tabs.Tab value="autocomplete" >AutoComplete</Tabs.Tab>
-                <Tabs.Tab value="generator" >Generator</Tabs.Tab>
-            </Tabs.List>
-            <Tabs.Panel value={"autocomplete"}>
-                <Space h={"md"}/>
-                <AutoCompleteWriter/>
-            </Tabs.Panel>
-            <Tabs.Panel value={"generator"}>
-                <Space h={"md"}/>
                 <Generator/>
-            </Tabs.Panel>
-        </Tabs>
     )
 
 }

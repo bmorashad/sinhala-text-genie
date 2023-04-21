@@ -32,13 +32,7 @@ export default function TextGenerator() {
 
     return (
         <>
-             {/*<Space h={"md"}/>*/}
 
-            {/*<Space h="md"/>*/}
-
-                <Space h={"md"}/>
-
-                {/*<Space h="md"/>*/}
                 <Text fw={700} fz={24}
                       color="blue.9"
                     // color="gray.8"
