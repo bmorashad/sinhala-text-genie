@@ -109,13 +109,13 @@ export default function TextGenerator() {
                     <Text fw={500} color="gray.7">Generated texts:</Text>
                     <Space h="md"/>
                     {generating && <>
-                            <Skeleton height={20} width={"80%"} radius="xl" visible={generating}/>
+                            <Skeleton height={15} width={"80%"} radius="xl" visible={generating}/>
                         <Space h="sm"/>
-                            <Skeleton height={20} width={"80%"} radius="xl" visible={generating}/>
+                            <Skeleton height={15} width={"80%"} radius="xl" visible={generating}/>
                         <Space h="sm"/>
-                            <Skeleton height={20} width={"80%"} radius="xl" visible={generating}/>
+                            <Skeleton height={15} width={"80%"} radius="xl" visible={generating}/>
                         <Space h="sm"/>
-                            <Skeleton height={20} width={"80%"} radius="xl" visible={generating}/>
+                            <Skeleton height={15} width={"80%"} radius="xl" visible={generating}/>
                     </>}
 
                     {

@@ -14,7 +14,7 @@ import {
 import {IconRefresh} from "@tabler/icons-react";
 import React, {useState} from "react";
 
-export default function Generator() {
+export default function NextWordPredictor() {
     const [generating, setGenerating] = useState(false)
     const [selectedWordIdx, setSelectedWordIdx] = useState()
     const [predictions, setPredictions] = useState([])
@@ -133,24 +133,26 @@ export default function Generator() {
         />
         <Space h="md"/>
         <Button leftIcon={<IconRefresh/>} onClick={() => onGenerate()} loading={generating}>
-            Generate
+            Predict
         </Button>
         <Space h="md"/>
         <Text fw={500} color="gray.7">Predicted words:</Text>
         <Space h="sm"/>
         {generating && <>
-            <Group>
-                <Skeleton height={20} width={"20%"} radius="xl" visible={generating}/>
-                <Skeleton height={20} width={"20%"} radius="xl" visible={generating}/>
-                <Skeleton height={20} width={"20%"} radius="xl" visible={generating}/>
-                <Skeleton height={20} width={"20%"} radius="xl" visible={generating}/>
+            <Group spacing={5}>
+                <Skeleton height={15} width={"15%"} radius="sm" visible={generating}/>
+                <Skeleton height={15} width={"15%"} radius="sm" visible={generating}/>
+                <Skeleton height={15} width={"15%"} radius="sm" visible={generating}/>
+                <Skeleton height={15} width={"15%"} radius="sm" visible={generating}/>
+                <Skeleton height={15} width={"15%"} radius="sm" visible={generating}/>
             </Group>
             <Space h={5}/>
-            <Group>
-                <Skeleton height={20} width={"20%"} radius="xl" visible={generating}/>
-                <Skeleton height={20} width={"20%"} radius="xl" visible={generating}/>
-                <Skeleton height={20} width={"20%"} radius="xl" visible={generating}/>
-                <Skeleton height={20} width={"20%"} radius="xl" visible={generating}/>
+            <Group spacing={5}>
+                <Skeleton height={15} width={"15%"} radius="sm" visible={generating}/>
+                <Skeleton height={15} width={"15%"} radius="sm" visible={generating}/>
+                <Skeleton height={15} width={"15%"} radius="sm" visible={generating}/>
+                <Skeleton height={15} width={"15%"} radius="sm" visible={generating}/>
+                <Skeleton height={15} width={"15%"} radius="sm" visible={generating}/>
             </Group>
         </>}
 
