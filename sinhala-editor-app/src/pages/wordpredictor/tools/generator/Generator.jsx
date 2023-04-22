@@ -38,7 +38,7 @@ export default function Generator() {
               color="blue.9"
             // color="gray.8"
         >
-            Type Sinhala & click generate
+            Sinhala Next Word Predictor
         </Text>
     <Space h="md"/>
     <Box size="sm">

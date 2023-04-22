@@ -37,7 +37,7 @@ export default function TextGenerator() {
                       color="blue.9"
                     // color="gray.8"
                 >
-                    Type Sinhala & click generate
+                    Sinhala Text Generator
                 </Text>
                 <Space h="md"/>
                 <Box size="sm">
@@ -45,10 +45,9 @@ export default function TextGenerator() {
                           color="gray.7"
                     >
                         <Container size={940} px={0} sx={{"margin": 0}}>
-
-                            Simply start typing in Sinhala and it will automatically suggest the next word or word pair.
-                            Just press the space bar and wait for the predictions to appear.
-                            Say goodbye to typos and writer's block, and start typing with ease today!
+                            Generate beautiful Sinhala text with ease! Unleash your creativity with Sinhala!
+                            <br/>
+                            Type in Sinhala and watch the magic of text generation unfold before your eyes! Try it now.
                         </Container>
                     </Text>
                 </Box>

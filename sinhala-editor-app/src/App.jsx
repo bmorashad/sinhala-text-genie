@@ -4,7 +4,7 @@ import './App.css'
 import {AppShell, MantineProvider, Navbar} from '@mantine/core'
 import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import Shell from "./components/app_shell/Shell.jsx";
-import TextGenerator from "./pages/textgen/Text Generator.jsx";
+import TextGenerator from "./pages/textgen/TextGenerator.jsx";
 import WordPredictor from "./pages/wordpredictor/WordPredictor.jsx";
 import NotFound from "./pages/notfound/NotFound.jsx";
 
