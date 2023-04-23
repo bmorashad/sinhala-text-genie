@@ -9,7 +9,7 @@ from services.textgen import get_next_word_pairs
 router = APIRouter()
 
 
-@router.get("/wordpair")
+@router.get("/wordpairs")
 async def word_pairs(prompt: str, max_num_of_pairs: int = 3,
                      prediction_mode: PredictionMode = PredictionMode.CONSISTENT,
                      diversity_level: int = 50) -> NextWordPairResponse:

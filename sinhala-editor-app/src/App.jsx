@@ -5,9 +5,9 @@ import {AppShell, MantineProvider, Navbar} from '@mantine/core'
 import {BrowserRouter as Router, Navigate, Route, Routes} from 'react-router-dom';
 import Shell from "./components/app_shell/Shell.jsx";
 import TextGenerator from "./pages/textgen/TextGenerator.jsx";
-import WordPredictor from "./pages/wordpredictor/WordPredictor.jsx";
 import NotFound from "./pages/notfound/NotFound.jsx";
 import {Notifications} from "@mantine/notifications";
+import NextWordPredictor from "./pages/wordpredictor/NextWordPredictor.jsx";
 
 
 function App() {
@@ -27,7 +27,7 @@ function App() {
         <Route path="/">
 
             <Route index element={<Navigate replace to="/nextword" />}/>
-            <Route path="nextword" element={<Shell><WordPredictor/></Shell>}/>
+            <Route path="nextword" element={<Shell><NextWordPredictor/></Shell>}/>
             <Route path="textgen" element={<Shell><TextGenerator/></Shell>}/>
             <Route path="*" element={<NotFound/>}/>
 

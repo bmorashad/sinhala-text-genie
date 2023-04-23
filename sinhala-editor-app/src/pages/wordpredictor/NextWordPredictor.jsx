@@ -11,27 +11,82 @@ import {
     Text,
     TextInput
 } from "@mantine/core";
-import {IconRefresh} from "@tabler/icons-react";
+import {IconRefresh, IconX} from "@tabler/icons-react";
 import React, {useState} from "react";
+import {generateNextWordPairs, generateNextWords, generateTexts} from "../../services/text-generator.js";
+import {notifications} from "@mantine/notifications";
 
 export default function NextWordPredictor() {
+    const PREDICTION_TYPES = [
+                    { value: 'single', label: 'Single Word' },
+                    { value: 'pair', label: 'Word Pair' },
+                ]
+    const PREDICTION_MODES = [
+                    { value: 'consistent', label: 'Consistent' },
+                    { value: 'diverse', label: 'Diverse' },
+                ]
     const [generating, setGenerating] = useState(false)
     const [selectedWordIdx, setSelectedWordIdx] = useState()
-    const [predictions, setPredictions] = useState([])
-    let [predictionMode, setPredictionMode] = useState("consistent")
+    const [nextWords, setNextWords] = useState([])
+    const [predictionMode, setPredictionMode] = useState(PREDICTION_MODES[0].value)
+    const [predictionType, setPredictionType] = useState(PREDICTION_TYPES[0].value)
+    const [inputText, setInputText] = useState('');
+    const [diversityLevel, setDiversityLevel] = useState(50)
+    const [numOfWords, setNumOfWords] = useState(3)
 
     const onWordSelect = (idx) => {
         setSelectedWordIdx(idx)
     }
-    const onGenerate = () => {
-        setGenerating(true)
-        setTimeout(() => {
-            setGenerating(false)
-            setPredictions(['ලියන්න','යන්න', 'න' ])
-        }, 1000)
 
+    const getWordPairs = async ({options}) => {
+        const res = await generateNextWordPairs({options})
+        return res.data["word_pairs"]
     }
-    const [generatorText, setGeneratorText] = useState('');
+
+    const getNextWords = async ({options}) => {
+        const res = await generateNextWords({options})
+        return res.data["next_words"]
+    }
+
+    const onGenerate = async () => {
+        setGenerating(true)
+        try {
+            let predictionOptions = {
+                prompt: inputText,
+                prediction_mode: predictionMode,
+                diversity_level: diversityLevel,
+            }
+            let generatedWords = []
+            if (predictionType === PREDICTION_TYPES[0].value) {
+                predictionOptions = {
+                    ...predictionOptions,
+                    max_num_of_words: numOfWords
+                }
+                generatedWords = await getNextWords({options: predictionOptions})
+            } else {
+                predictionOptions = {
+                    ...predictionOptions,
+                    max_num_of_pairs: numOfWords
+                }
+                generatedWords = await getWordPairs({options: predictionOptions})
+            }
+            setGenerating(false)
+            setNextWords(generatedWords)
+        } catch (e) {
+            console.error(e.message)
+            notifications.show({
+                title: 'Error occurred while predicting next words',
+                message: e.message,
+                withCloseButton: true,
+                color: "red",
+                icon: <IconX/>,
+                autoClose: 3000,
+                withBorder: true
+
+            })
+            setGenerating(false)
+        }
+    }
     return (
 <>
         <Text fw={700} fz={24}
@@ -66,39 +121,37 @@ export default function NextWordPredictor() {
             wrap="wrap"
         >
             <Select
-                // label="Prediction type:"
                 label={
                     <Text fw={500} color="gray.7">Prediction type:</Text>
                 }
                 placeholder="type"
-                defaultValue="single"
                 width="sm"
-                data={[
-                    { value: 'single', label: 'Single Word' },
-                    { value: 'pair', label: 'Word Pair' },
-                ]}/>
+                data={PREDICTION_TYPES}
+                onChange={setPredictionType}
+                defaultValue={predictionMode}
+                value={predictionType}
+            />
             <Select
-                // label="Prediction mode:"
                 label={
                     <Text fw={500} color="gray.7">Prediction mode:</Text>
                 }
                 placeholder="mode"
-                defaultValue={predictionMode}
                 width="sm"
-                data={[
-                    { value: 'consistent', label: 'Consistent' },
-                    { value: 'diverse', label: 'Diverse' },
-                ]}
+                data={PREDICTION_MODES}
+                defaultValue={predictionMode}
+                value={predictionMode}
                 onChange={setPredictionMode}
             />
             <NumberInput
+                value={numOfWords}
+                onChange={setNumOfWords}
                 defaultValue={3}
                 placeholder="level"
                 max={20}
                 min={3}
                 // label="Diversity level:"
                 label={
-                    <Text fw={500} color="gray.7">Number of predictions:</Text>
+                    <Text fw={500} color="gray.7">Number of words:</Text>
                 }
             />
         </Flex>
@@ -111,6 +164,8 @@ export default function NextWordPredictor() {
                 <Space h={4}/>
                 <Slider
                     // sx={{"width": "100%"}}
+                    value={diversityLevel}
+                    onChange={setDiversityLevel}
                     defaultValue={50}
                     size="sm"
                     thumbSize={18}
@@ -120,14 +175,15 @@ export default function NextWordPredictor() {
                     marks={[
                         { value: 50},
                     ]}
-                    disabled={predictionMode === "consistent"}
+                    disabled={predictionMode === PREDICTION_MODES[0].value}
                 />
             </div>
         </SimpleGrid>
         <Space h="md"/>
         <TextInput
-            value={generatorText}
-            onChange={(event) => setGeneratorText(event.currentTarget.value)}
+            value={inputText}
+            onChange={(event) => {
+                setInputText(event.currentTarget.value)}}
             placeholder="සිංහලෙන් ලියන්න..."
             size="md"
         />
@@ -161,7 +217,7 @@ export default function NextWordPredictor() {
             <Chip.Group multiple={false} value={selectedWordIdx} onChange={onWordSelect}>
                 <Group position="left">
                     {
-                        predictions.map((p, i) => (
+                        nextWords.map((p, i) => (
                             <CopyButton key={"chip" + i} value={p}>
                                 {({copied, copy}) => (
                                     <Chip  size={"md"} value={`${i}`} onClick={copy}>{p}</Chip>
