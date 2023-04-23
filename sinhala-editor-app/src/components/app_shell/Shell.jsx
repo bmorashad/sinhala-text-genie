@@ -1,23 +1,65 @@
 import React, {useState} from 'react';
 import {
+  ActionIcon,
   AppShell,
   Avatar,
-  Burger,
-  Center,
+  Burger, Button,
+  Center, Divider, Flex,
   Footer,
   Group,
   Header,
   MediaQuery,
   Navbar,
-  NavLink,
-  Text,
+  NavLink, Space,
+  Text, Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import logo from '../../assets/icon.svg'
-import {IconCursorText, IconWriting} from '@tabler/icons-react';
-import {Link, NavLink as Nav} from "react-router-dom";
+import {IconCursorText, IconLogout, IconWriting} from '@tabler/icons-react';
+import {Link, NavLink as Nav, useNavigate} from "react-router-dom";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function Shell(props) {
+  const LoginButton = () => {
+    const { loginWithRedirect, user, isLoading, logout } = useAuth0();
+
+    if (!isLoading) {
+      console.log(user)
+      return <>
+        <Flex gap={15} justify={"center"} align={"center"}>
+        <Avatar src={user.picture}></Avatar>
+          <div>
+        <Text size={"md"} fw={500} color={"gray.7"}>{user.name}</Text>
+          <Text color={"dimmed"} size={"xs"} fw={300}> {user.email} </Text>
+            </div>
+                <Tooltip label="Logout">
+
+          <ActionIcon variant={"subtle"} color={"blue.5"}
+                      onClick={() =>
+                          logout({ logoutParams: { returnTo: window.location.origin + "/logout" } })}>
+            <IconLogout />
+          </ActionIcon>
+                  </Tooltip>
+
+        </Flex>
+        {/*<Space h={"lg"}/>*/}
+        {/*<Button color={"blue"} variant={"subtle"} onClick={() => logout({ logoutParams: { returnTo: window.location.origin + "/logout" } })}>*/}
+        {/*  Log Out*/}
+        {/*</Button>*/}
+      </>
+    }
+    return <Button color={"theme-green"}
+                   variant={"gradient"}
+                   onClick={() => loginWithRedirect()}>Log In</Button>;
+  };
+
+  const LogoutButton = () => {
+    const { logout } = useAuth0();
+
+    return (
+        <></>
+    );
+  };
   const theme = useMantineTheme();
   const [opened, setOpened] = useState(false);
   let NavMenu = ({to, label, icon}) =>
@@ -28,7 +70,6 @@ export default function Shell(props) {
             )}
           </Nav>
       )
-  useState()
   return (
       <AppShell
           styles={{
@@ -39,12 +80,24 @@ export default function Shell(props) {
           navbarOffsetBreakpoint="sm"
           asideOffsetBreakpoint="sm"
           navbar={
-            <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{sm: 200, lg: 300}}>
-              {/* <Box w={240}> */}
-              <NavMenu to={"/nextword"} label={"Word Predictor"} icon={<IconCursorText stroke={1.5}/>}/>
-              <NavMenu to={"/textgen"} label={"Text Generator"} icon={<IconWriting stroke={1.5}/>}/>
-              {/* </Box> */}
-            </Navbar>
+            <>
+              <Navbar hiddenBreakpoint="sm" hidden={!opened} width={{sm: 200, lg: 300}}>
+                <Navbar.Section grow p="md" >
+                  {/* <Box w={240}> */}
+                  <NavMenu to={"/nextword"} label={"Word Predictor"} icon={<IconCursorText stroke={1.5}/>}/>
+                  <NavMenu to={"/textgen"} label={"Text Generator"} icon={<IconWriting stroke={1.5}/>}/>
+                  {/* </Box> */}
+                </Navbar.Section>
+                <Divider m={"lg"}/>
+                <Navbar.Section p="md">
+                  <Flex direction={"column"}>
+                    <LoginButton />
+                    <Space h={"md"}/>
+                    <LogoutButton/>
+                  </Flex>
+                </Navbar.Section>
+              </Navbar>
+            </>
           }
           footer={
             <Footer height={60} p="md">

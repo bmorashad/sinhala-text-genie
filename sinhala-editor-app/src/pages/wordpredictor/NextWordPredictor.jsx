@@ -1,25 +1,26 @@
 import {
-    Box,
-    Button,
-    Chip,
-    Container,
-    CopyButton,
-    Flex,
-    Group,
-    NumberInput,
-    Paper,
-    Select,
-    SimpleGrid,
-    Skeleton,
-    Slider,
-    Space,
-    Text,
-    TextInput
+  Box,
+  Button,
+  Chip,
+  Container,
+  CopyButton,
+  Flex,
+  Group, LoadingOverlay,
+  NumberInput,
+  Paper,
+  Select,
+  SimpleGrid,
+  Skeleton,
+  Slider,
+  Space,
+  Text,
+  TextInput
 } from "@mantine/core";
 import {IconRefresh, IconX} from "@tabler/icons-react";
 import React, {useState} from "react";
 import {generateNextWordPairs, generateNextWords} from "../../services/text-generator.js";
 import {notifications} from "@mantine/notifications";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function NextWordPredictor() {
   const PREDICTION_TYPES = [
@@ -92,8 +93,16 @@ export default function NextWordPredictor() {
       setGenerating(false)
     }
   }
+
+  const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
+  // if (!isLoading && !isAuthenticated) {
+  //   loginWithRedirect()
+  //   return (<LoadingOverlay visible={true}/>)
+  // }
+
   return (
       <>
+       <LoadingOverlay visible={isLoading}/>
         <Text fw={700} fz={24}
               color="blue.9"
             // color="gray.8"
@@ -236,8 +245,7 @@ export default function NextWordPredictor() {
               </Chip.Group>
           }
         </Paper>
-      </>
+  </>
 
   )
 }
-
