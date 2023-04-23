@@ -5,3 +5,4 @@ __test__**
 language-model/model/model_old
 language-model/model/model_old/index_lookup.joblib
 __pycache__
+.vite
