@@ -30,5 +30,5 @@ class NextWordPairResponse(BaseModel):
 class TextGenResponse(BaseModel):
     prompt: str
     generated_texts: List[str]
-    gen_len: int
+    max_gen_len: int
     max_num_of_generations: int

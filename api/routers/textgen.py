@@ -10,13 +10,13 @@ router = APIRouter()
 
 @router.get("/textgen")
 async def generate_texts(prompt: str, max_num_of_generations: int = 1,
-                         gen_length: int = 10) -> TextGenResponse:
+                         max_gen_len: int = 10) -> TextGenResponse:
     try:
-        generated_texts: List[str] = get_generated_text_list(prompt, max_num_of_generations, gen_length)
+        generated_texts: List[str] = get_generated_text_list(prompt, max_num_of_generations, max_gen_len)
         return TextGenResponse(
             prompt=prompt,
             generated_texts=generated_texts,
-            max_gen_length=gen_length,
+            max_gen_len=max_gen_len,
             max_num_of_generations=max_num_of_generations
         )
     except ValueError as e:

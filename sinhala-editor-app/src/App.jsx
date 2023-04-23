@@ -7,6 +7,7 @@ import Shell from "./components/app_shell/Shell.jsx";
 import TextGenerator from "./pages/textgen/TextGenerator.jsx";
 import WordPredictor from "./pages/wordpredictor/WordPredictor.jsx";
 import NotFound from "./pages/notfound/NotFound.jsx";
+import {Notifications} from "@mantine/notifications";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         }}
       withGlobalStyles
     >
+<Notifications position={"top-center"}/>
             <Router>
                 <Routes>
         <Route path="/">
