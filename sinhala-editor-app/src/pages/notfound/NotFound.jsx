@@ -1,11 +1,4 @@
-import {
-    createStyles,
-    Title,
-    Text,
-    Button,
-    Container,
-    Group, Center, Flex,
-} from "@mantine/core";
+import {Button, Container, createStyles, Flex, Group, Text, Title,} from "@mantine/core";
 import React from "react";
 import {Link} from "react-router-dom";
 
@@ -13,7 +6,7 @@ const useStyles = createStyles((theme) => ({
   root: {
     paddingTop: 80,
     paddingBottom: 80,
-      margin: 'auto',
+    margin: 'auto',
   },
 
   label: {
@@ -23,9 +16,9 @@ const useStyles = createStyles((theme) => ({
     lineHeight: 1,
     marginBottom: theme.spacing.xl * 1.5,
     color:
-      theme.colorScheme === "dark"
-        ? theme.colors.dark[4]
-        : theme.colors.gray[2],
+        theme.colorScheme === "dark"
+            ? theme.colors.dark[4]
+            : theme.colors.gray[2],
 
     [theme.fn.smallerThan("sm")]: {
       fontSize: 120,
@@ -52,30 +45,30 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export default function NotFound() {
-  const { classes } = useStyles();
+  const {classes} = useStyles();
 
   return (
       <Flex align={"center"} justify={"center"} sx={{"width": "100vw"}}>
-    <Container className={classes.root}>
-      <div className={classes.label}>404</div>
-      <Title className={classes.title}>You have found a secret place.</Title>
-      <Text
-        color="dimmed"
-        size="lg"
-        align="center"
-        className={classes.description}
-      >
-        Unfortunately, this is only a 404 page. You may have mistyped the
-        address, or the page has been moved to another URL.
-      </Text>
-      <Group position="center">
-          <Link to={"/"}>
-        <Button variant="subtle" size="md" >
-          Take me back to home page
-        </Button>
-              </Link>
-      </Group>
-    </Container>
-       </Flex>
+        <Container className={classes.root}>
+          <div className={classes.label}>404</div>
+          <Title className={classes.title}>You have found a secret place.</Title>
+          <Text
+              color="dimmed"
+              size="lg"
+              align="center"
+              className={classes.description}
+          >
+            Unfortunately, this is only a 404 page. You may have mistyped the
+            address, or the page has been moved to another URL.
+          </Text>
+          <Group position="center">
+            <Link to={"/"}>
+              <Button variant="subtle" size="md">
+                Take me back to home page
+              </Button>
+            </Link>
+          </Group>
+        </Container>
+      </Flex>
   );
 }

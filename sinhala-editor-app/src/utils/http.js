@@ -5,7 +5,7 @@ export const Http = (url_prefix) => {
     url: url_prefix,
   };
   const addToken = (token) => {
-    const tokenHeaders = { Authorization: 'Bearer ' + token };
+    const tokenHeaders = {Authorization: 'Bearer ' + token};
     if (token) {
       requestConf = {
         ...requestConf,
@@ -39,22 +39,22 @@ export const Http = (url_prefix) => {
     request['method'] = method;
     return request;
   };
-  const get = async ({ data = null, url = '', token = '', params = {} } = {}) => {
+  const get = async ({data = null, url = '', token = '', params = {}} = {}) => {
     const conf = constructRequest('GET', data, url, token, params);
     const request = await axios(conf);
     return request;
   };
-  const post = async ({ data = null, url = '', token = '', params = {} } = {}) => {
+  const post = async ({data = null, url = '', token = '', params = {}} = {}) => {
     const conf = constructRequest('POST', data, url, token, params);
     const request = await axios(conf);
     return request;
   };
-  const put = async ({ data = null, url = '', token = '', prams = {} } = {}) => {
+  const put = async ({data = null, url = '', token = '', prams = {}} = {}) => {
     const conf = constructrequest('PUT', data, url, token, params);
     const request = await axios(conf);
     return request;
   };
-  const remove = async ({ data = null, url = '', token = '', params = {} } = {}) => {
+  const remove = async ({data = null, url = '', token = '', params = {}} = {}) => {
     const conf = constructrequest('DELETE', data, url, token, params);
     const request = await axios(conf);
     return request;
