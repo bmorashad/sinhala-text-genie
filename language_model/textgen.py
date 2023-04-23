@@ -10,11 +10,10 @@ from tensorflow.keras.layers import TextVectorization
 from language_model.util import constants
 import pickle
 import keras_nlp
-from language_model.sinhala_nlp.preprocessor import custom_standardization
 import importlib.util
 import os
 
-class PredictionMode:
+class PredictionMode(Enum):
     DIVERSE = "diverse"
     CONSISTENT = "consistent"
 
@@ -47,7 +46,7 @@ vectorize_layer = TextVectorization.from_config(vectorizer_file['config'])
 vectorize_layer.set_weights(vectorizer_file['weights'])
 
 
-def validate_prompt(func):
+def _validate_prompt(func):
     def wrapper(prompt: str, *args, **kwargs) -> List[str]:
         if len(prompt.split(" ")) >= constants.MAX_LEN:
             raise ValueError("Prompt length exceeds maximum supported length of {} words".
@@ -65,7 +64,6 @@ def _sample_token(logits):
     return np.random.choice(indices, p=preds)
 
 
-@validate_prompt
 def _generate_text(prompt, response_length):
     decoded_sample = prompt
     generated_text = prompt
@@ -83,6 +81,7 @@ def _generate_text(prompt, response_length):
     return generated_text
 
 
+@_validate_prompt
 def generate_text(prompt, num_of_text=1, response_length=15):
     generated_text_list = []
     for i in range(num_of_text):
@@ -91,7 +90,7 @@ def generate_text(prompt, num_of_text=1, response_length=15):
     return generated_text_list
 
 
-@validate_prompt
+@_validate_prompt
 def predict_next_words(prompt: str, num_of_words=3, prediction_mode=PredictionMode.CONSISTENT,
                        diversity_level=50) -> List[str]:
     tokenized_prompt = vectorize_layer([prompt])[:, :-1]
@@ -111,7 +110,7 @@ def predict_next_words(prompt: str, num_of_words=3, prediction_mode=PredictionMo
     return list((filter(None, top_words)))
 
 
-@validate_prompt
+@_validate_prompt
 def predict_next_word_pairs(prompt: str, num_of_words=3, prediction_mode=PredictionMode.CONSISTENT,
                             diversity_level=50) -> List[str]:
     top_first_words = predict_next_words(prompt, num_of_words, prediction_mode)
@@ -135,7 +134,7 @@ if __name__ == "__main__":
         if text.lower() == "q":
             print("Exiting...")
             break
-        validate_prompt(text)
+        _validate_prompt(text)
         print("Predicted words", predict_next_words(text, 25))
         print("Predicted diverse words", predict_next_words(text, 5, PredictionMode.DIVERSE))
         print("==================================================================================")
