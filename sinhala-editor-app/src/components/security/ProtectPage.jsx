@@ -5,10 +5,13 @@ import React from "react";
 export const ProtectedRoute = ({children}) => {
   const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
 
-  const appState = window.location.pathname
+  const appState = {
+    visitedPath: window.location.pathname
+  }
+  const appStateJson =  encodeURIComponent(JSON.stringify(appState))
 
   const options = {
-    appState: appState
+    appState: appStateJson
   }
   if (!isLoading && !isAuthenticated) {
     loginWithRedirect(options)

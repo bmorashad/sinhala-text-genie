@@ -15,8 +15,9 @@ function RoutesWithAuth0Provider() {
   const navigate = useNavigate()
   const onRedirectCallback = (appState) => {
     let returnTo = "/"
-    if (appState) {
-      returnTo = appState
+    let appStateDecoded = JSON.parse(decodeURIComponent(appState))
+    if (appStateDecoded.visitedPath) {
+      returnTo = appStateDecoded.visitedPath
     }
     navigate(returnTo);
   };
