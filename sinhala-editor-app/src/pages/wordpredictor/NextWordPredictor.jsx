@@ -5,8 +5,7 @@ import {
   Container,
   CopyButton,
   Flex,
-  Group, LoadingOverlay,
-  NumberInput,
+  Group, NumberInput,
   Paper,
   Select,
   SimpleGrid,
@@ -20,7 +19,6 @@ import {IconRefresh, IconX} from "@tabler/icons-react";
 import React, {useState} from "react";
 import {generateNextWordPairs, generateNextWords} from "../../services/text-generator.js";
 import {notifications} from "@mantine/notifications";
-import {useAuth0} from "@auth0/auth0-react";
 
 export default function NextWordPredictor() {
   const PREDICTION_TYPES = [
@@ -62,7 +60,7 @@ export default function NextWordPredictor() {
         prediction_mode: predictionMode,
         diversity_level: diversityLevel,
       }
-      let generatedWords = []
+      let generatedWords
       if (predictionType === PREDICTION_TYPES[0].value) {
         predictionOptions = {
           ...predictionOptions,
@@ -166,7 +164,7 @@ export default function NextWordPredictor() {
           <SimpleGrid cols={3}>
             <div>
               <Text fw={500} size="sm"
-                    color={predictionMode === "consistent" ? "gray.6" : "gray.7"}
+                    color={predictionMode === PREDICTION_MODES[0].value ? "gray.6" : "gray.7"}
               >Diversity level:</Text>
               <Space h={4}/>
               <Slider
@@ -228,7 +226,7 @@ export default function NextWordPredictor() {
                   {
                     nextWords.map((p, i) => (
                         <CopyButton key={"chip" + i} value={p}>
-                          {({copied, copy}) => (
+                          {({_, copy}) => (
                               <Chip size={"md"} value={`${i}`} onClick={copy}>{p}</Chip>
                           )}
                         </CopyButton>
