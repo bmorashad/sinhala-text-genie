@@ -222,8 +222,9 @@ export default function NextWordPredictor() {
 
           {
               !generating &&
+              <Container size={1300} px={0} sx={{"margin": 0}}>
               <Chip.Group multiple={false} value={selectedWordIdx} onChange={onWordSelect}>
-                <Group position="left">
+                <Group position="left" spacing={12}>
                   {
                     nextWords.map((p, i) => (
                         <CopyButton key={"chip" + i} value={p}>
@@ -236,6 +237,7 @@ export default function NextWordPredictor() {
                   }
                 </Group>
               </Chip.Group>
+              </Container>
           }
         </Paper>
   </>
