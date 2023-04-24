@@ -20,8 +20,8 @@ import {Link, NavLink as Nav, useNavigate} from "react-router-dom";
 import {useAuth0} from "@auth0/auth0-react";
 
 export default function Shell(props) {
-  const LoginButton = () => {
-    const { loginWithRedirect, user, isLoading, logout } = useAuth0();
+  const Login = () => {
+    const { user, isLoading, logout } = useAuth0();
 
     if (!isLoading) {
       return <>
@@ -35,7 +35,11 @@ export default function Shell(props) {
 
           <ActionIcon variant={"subtle"} color={"gray.5"}
                       onClick={() =>
-                          logout({ logoutParams: { returnTo: window.location.origin + "/logout" } })}>
+                          logout({
+                            logoutParams:
+                                { returnTo: window.location.origin + "/logout" +
+                                      "?redirectTo=" + window.location.pathname },
+                          })}>
             <IconLogout />
           </ActionIcon>
                   </Tooltip>
@@ -95,7 +99,7 @@ export default function Shell(props) {
                 <Divider m={"lg"}/>
                 <Navbar.Section p="md">
                   <Flex direction={"column"}>
-                    <LoginButton />
+                    <Login />
                     <Space h={"md"}/>
                     <LogoutButton/>
                   </Flex>

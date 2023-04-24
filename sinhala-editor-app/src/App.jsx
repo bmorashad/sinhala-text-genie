@@ -10,6 +10,7 @@ import {Auth0Provider, useAuth0} from "@auth0/auth0-react";
 import React from "react";
 import {protectPage} from "./components/security/ProtectPage.jsx";
 import Callback from "./pages/callback/Callback.jsx";
+import LogOut from "./pages/logout/LogOut.jsx";
 
 function RoutesWithAuth0Provider() {
   const navigate = useNavigate()
@@ -34,7 +35,7 @@ function RoutesWithAuth0Provider() {
     <Routes>
       <Route path="/">
         <Route index element={<Navigate replace to="/nextword"/>}/>
-        <Route path="logout" element={<Navigate replace to={"/"}/>}/>
+        <Route path="logout" element={<LogOut/>}/>
         <Route path="nextword" element={protectPage(withShell(<NextWordPredictor/>))}/>
         <Route path="textgen" element={protectPage(withShell(<TextGenerator/>))}/>
         <Route path="callback" element={<Callback/>}/>

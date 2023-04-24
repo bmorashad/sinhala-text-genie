@@ -1,15 +1,17 @@
 import {Flex, LoadingOverlay} from "@mantine/core";
 import React, {useEffect} from "react";
 import {useAuth0} from "@auth0/auth0-react";
+import {useNavigate} from "react-router-dom";
 
-export default function Callback() {
-  const { logout } = useAuth0()
-      useEffect(() => {
+export default function LogOut() {
+  const navigate = useNavigate()
+  useEffect(() => {
     const urlQueryParams = new URLSearchParams(
         window.location.search
     );
-    if (urlQueryParams.has("error")) {
-      logout()
+    const redirectTo = urlQueryParams.get("redirectTo")
+    if (redirectTo) {
+      navigate(redirectTo)
     }
   }, []);
 
