@@ -94,15 +94,8 @@ export default function NextWordPredictor() {
     }
   }
 
-  const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
-  // if (!isLoading && !isAuthenticated) {
-  //   loginWithRedirect()
-  //   return (<LoadingOverlay visible={true}/>)
-  // }
-
   return (
       <>
-       <LoadingOverlay visible={isLoading}/>
         <Text fw={700} fz={24}
               color="blue.9"
             // color="gray.8"

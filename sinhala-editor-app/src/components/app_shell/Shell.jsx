@@ -10,7 +10,7 @@ import {
   Header,
   MediaQuery,
   Navbar,
-  NavLink, Space,
+  NavLink, Skeleton, Space,
   Text, Tooltip,
   useMantineTheme,
 } from '@mantine/core';
@@ -24,9 +24,8 @@ export default function Shell(props) {
     const { loginWithRedirect, user, isLoading, logout } = useAuth0();
 
     if (!isLoading) {
-      console.log(user)
       return <>
-        <Flex gap={15} justify={"center"} align={"center"}>
+        <Flex gap={15} justify={"center"} align={"center"} wrap={"wrap"}>
         <Avatar src={user.picture}></Avatar>
           <div>
         <Text size={"md"} fw={500} color={"gray.7"}>{user.name}</Text>
@@ -34,7 +33,7 @@ export default function Shell(props) {
             </div>
                 <Tooltip label="Logout">
 
-          <ActionIcon variant={"subtle"} color={"blue.5"}
+          <ActionIcon variant={"subtle"} color={"gray.5"}
                       onClick={() =>
                           logout({ logoutParams: { returnTo: window.location.origin + "/logout" } })}>
             <IconLogout />
@@ -42,15 +41,20 @@ export default function Shell(props) {
                   </Tooltip>
 
         </Flex>
-        {/*<Space h={"lg"}/>*/}
-        {/*<Button color={"blue"} variant={"subtle"} onClick={() => logout({ logoutParams: { returnTo: window.location.origin + "/logout" } })}>*/}
-        {/*  Log Out*/}
-        {/*</Button>*/}
       </>
     }
-    return <Button color={"theme-green"}
-                   variant={"gradient"}
-                   onClick={() => loginWithRedirect()}>Log In</Button>;
+    return (
+        <>
+          <Flex gap={15} justify={"center"} align={"center"} wrap={"wrap"}>
+          <Skeleton height={40} width={40} radius="md" visible={true} variant={""}/>
+            <div>
+              <Skeleton height={13} width={160} radius="md" visible={true}/>
+              <Space h={5}/>
+              <Skeleton height={10} width={100} radius="md" visible={true}/>
+            </div>
+          </Flex>
+          </>
+    )
   };
 
   const LogoutButton = () => {
@@ -134,4 +138,12 @@ export default function Shell(props) {
         {props.children}
       </AppShell>
   );
+}
+
+export const withShell = (children) => {
+  return (
+      <Shell>
+        {children}
+      </Shell>
+  )
 }
