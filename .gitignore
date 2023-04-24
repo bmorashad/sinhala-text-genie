@@ -1,9 +1,5 @@
 .idea
-language-model/model/model_3k
-language_model/model/model0.2/
 __test__**
-language-model/model/model_old
-language-model/model/model_old/index_lookup.joblib
 __pycache__
 .vite
 node_modules
