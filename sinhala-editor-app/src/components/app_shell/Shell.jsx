@@ -108,10 +108,10 @@ export default function Shell(props) {
             </>
           }
           footer={
-            <Footer height={60} p="md">
+            <Footer height={60} p="md" >
               <Center>
-                <Text color={"dimmed"} fw={300} size={"md"}>
-                  SinhalaTextGenie © 2023 rashad. All rights reserved.
+                <Text color={"dimmed"} fw={400} size={"sm"}>
+                  © 2023 rashad.dev. All rights reserved.
                 </Text>
               </Center>
             </Footer>
