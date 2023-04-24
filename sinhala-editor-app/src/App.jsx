@@ -1,4 +1,5 @@
 import './App.css'
+import config from "./config/config.json"
 import {Center, Flex, Loader, LoadingOverlay, MantineProvider} from '@mantine/core'
 import {BrowserRouter as Router, Navigate, Route, Routes, useNavigate} from 'react-router-dom';
 import Shell, {withShell} from "./components/app_shell/Shell.jsx";
@@ -28,7 +29,8 @@ function RoutesWithAuth0Provider() {
       domain={import.meta.env.VITE_DOMAIN}
       clientId={import.meta.env.VITE_CLIENT_ID}
       authorizationParams={{
-        redirect_uri: import.meta.env.VITE_REDIRECT_URI
+        redirect_uri: import.meta.env.VITE_REDIRECT_URI,
+        audience: config.language_model_api_host
       }}
       onRedirectCallback={onRedirectCallback}
 

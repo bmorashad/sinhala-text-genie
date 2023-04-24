@@ -19,6 +19,7 @@ import {IconRefresh, IconX} from "@tabler/icons-react";
 import React, {useState} from "react";
 import {generateNextWordPairs, generateNextWords} from "../../services/text-generator.js";
 import {notifications} from "@mantine/notifications";
+import {useAuth0} from "@auth0/auth0-react";
 
 export default function NextWordPredictor() {
   const PREDICTION_TYPES = [
@@ -41,19 +42,23 @@ export default function NextWordPredictor() {
   const onWordSelect = (idx) => {
     setSelectedWordIdx(idx)
   }
+  const { getAccessTokenSilently } = useAuth0()
 
-  const getWordPairs = async ({options}) => {
-    const res = await generateNextWordPairs({options})
+  const getWordPairs = async ({options, token}) => {
+    const res = await generateNextWordPairs({options, token})
     return res.data["word_pairs"]
   }
 
-  const getNextWords = async ({options}) => {
-    const res = await generateNextWords({options})
+  const getNextWords = async ({options ,token}) => {
+    const res = await generateNextWords({options, token})
     return res.data["next_words"]
   }
 
   const onGenerate = async () => {
     setGenerating(true)
+    let token = await getAccessTokenSilently(
+    )
+    console.log(token)
     try {
       let predictionOptions = {
         prompt: inputText,
@@ -66,13 +71,13 @@ export default function NextWordPredictor() {
           ...predictionOptions,
           max_num_of_words: numOfWords
         }
-        generatedWords = await getNextWords({options: predictionOptions})
+        generatedWords = await getNextWords({options: predictionOptions, token})
       } else {
         predictionOptions = {
           ...predictionOptions,
           max_num_of_pairs: numOfWords
         }
-        generatedWords = await getWordPairs({options: predictionOptions})
+        generatedWords = await getWordPairs({options: predictionOptions, token})
       }
       setGenerating(false)
       setNextWords(generatedWords)

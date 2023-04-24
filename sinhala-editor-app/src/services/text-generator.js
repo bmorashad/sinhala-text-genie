@@ -1,6 +1,7 @@
 import {Http} from "../utils/http"
+import config from "../config/config.json"
 
-const base = "http://127.0.0.1:8000"
+const base = config.language_model_api_host
 const http = Http(base);
 export const generateTexts = async ({token = "", options = {}}) =>
     http.get({token: token, url: "/textgen", params: options});
