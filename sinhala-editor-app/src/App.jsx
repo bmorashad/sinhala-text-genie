@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Navigate, Route, Routes, useNavigate} from 'rea
 import Shell, {withShell} from "./components/app_shell/Shell.jsx";
 import TextGenerator from "./pages/textgen/TextGenerator.jsx";
 import NotFound from "./pages/notfound/NotFound.jsx";
+import Error from "./pages/error/Error.jsx";
 import {Notifications} from "@mantine/notifications";
 import NextWordPredictor from "./pages/wordpredictor/NextWordPredictor.jsx";
 import {Auth0Provider, useAuth0} from "@auth0/auth0-react";
@@ -24,10 +25,10 @@ function RoutesWithAuth0Provider() {
   };
 
   return (<Auth0Provider
-      domain="dev-1g2o651ytyqw7ld6.us.auth0.com"
-      clientId="FApXnoAxjW1qGSjK13KrVclqElefp0oU"
+      domain={import.meta.env.VITE_DOMAIN}
+      clientId={import.meta.env.VITE_CLIENT_ID}
       authorizationParams={{
-        redirect_uri: window.location.origin + "/callback"
+        redirect_uri: import.meta.env.VITE_REDIRECT_URI
       }}
       onRedirectCallback={onRedirectCallback}
 
