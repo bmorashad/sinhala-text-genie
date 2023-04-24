@@ -81,6 +81,7 @@ export default function NextWordPredictor() {
       }
       setGenerating(false)
       setNextWords(generatedWords)
+      setSelectedWordIdx(-1)
     } catch (e) {
       console.error(e.message)
       notifications.show({
