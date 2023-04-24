@@ -30,7 +30,5 @@ class JsonWebToken:
         except jwt.exceptions.PyJWKClientError as e:
             raise UnableCredentialsException
         except jwt.exceptions.InvalidTokenError as e:
-            print("Invalid")
-            print(e)
             raise BadCredentialsException
         return payload
