@@ -111,8 +111,9 @@ def predict_next_words(prompt: str, num_of_words=3, prediction_mode=PredictionMo
 
 
 @_validate_prompt
-def predict_next_word_pairs(prompt: str, num_of_words=3, prediction_mode=PredictionMode.CONSISTENT) -> List[str]:
-    top_first_words = predict_next_words(prompt, num_of_words, prediction_mode)
+def predict_next_word_pairs(prompt: str, num_of_words=3, prediction_mode=PredictionMode.CONSISTENT,
+                            diversity_level=50) -> List[str]:
+    top_first_words = predict_next_words(prompt, num_of_words, prediction_mode, diversity_level)
     top_word_pairs = []
     for word in top_first_words:
         new_prompt = prompt + " " + word
