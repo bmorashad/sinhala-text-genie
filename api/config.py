@@ -2,9 +2,9 @@ from pydantic import BaseSettings, validator
 
 
 class Settings(BaseSettings):
-    auth0_audience: str = "Hello"
-    auth0_domain: str = "Hello"
-    client_origin_url: str = "hello"
+    auth0_audience: str
+    auth0_domain: str
+    client_origin_url: str
     port: int = 2
     reload: bool = True
 
@@ -16,7 +16,7 @@ class Settings(BaseSettings):
         return v
 
     class Config:
-        env_file = ".env"
+        env_file = "api/.env"
         env_file_encoding = "utf-8"
 
 

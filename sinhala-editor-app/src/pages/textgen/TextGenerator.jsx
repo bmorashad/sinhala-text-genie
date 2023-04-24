@@ -53,7 +53,7 @@ export default function TextGenerator() {
         withBorder: true
 
       })
-
+      setGeneratorTexts([])
       setGenerating(false)
     }
   }

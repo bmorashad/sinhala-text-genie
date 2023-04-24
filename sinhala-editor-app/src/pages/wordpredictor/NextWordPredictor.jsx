@@ -94,6 +94,7 @@ export default function NextWordPredictor() {
         withBorder: true
 
       })
+      setNextWords([])
       setGenerating(false)
     }
   }
