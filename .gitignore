@@ -3,3 +3,4 @@ __test__**
 __pycache__
 .vite
 node_modules
+.env**
