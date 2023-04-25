@@ -2,6 +2,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+
+from language_model.textgen import PredictionMode
 import secure
 import uvicorn
 from fastapi import FastAPI

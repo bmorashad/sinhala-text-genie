@@ -1,6 +1,5 @@
 from typing import List
 from fastapi import APIRouter
-
 from language_model.textgen import PredictionMode
 from routers.errors.errors import APIException
 from routers.response_models.responses import NextWordPairResponse
