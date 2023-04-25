@@ -1,16 +1,19 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.10
+FROM python:3.10
+
 EXPOSE 8000
 
-COPY ./api/requirements.txt .
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+RUN mkdir build
 
-COPY ./language_model/requirements.txt .
-RUN pip install --no-cache-dir --upgrade -r requirements.txt
+WORKDIR /build
 
-WORKDIR /app/backend/api
-
-ENV PYTHONPATH=/app/backend
+COPY . .
+RUN pip install --no-cache-dir --upgrade -r /build/language_model/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /build/api/requirements.txt
 
 
-COPY ./api /app/backend/api
-COPY ./language_model /app/backend/language_model
+ENV PYTHONPATH=/build
+
+
+WORKDIR /build/api
+
+CMD python -m uvicorn main:app --host 0.0.0.0 --port 8000
