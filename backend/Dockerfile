@@ -15,7 +15,7 @@ RUN apt update && apt install -y python3-pip                                  \
     && pip3 install -r /build/language_model/requirements.txt                 \
     && apt remove -y python3-pip                                              \
     && apt autoremove --purge -y                                              \
-    && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/*.list \
+    && rm -rf /var/lib/apt/lists/* /etc/apt/sources.list.d/*.list
 
 
 EXPOSE 80
