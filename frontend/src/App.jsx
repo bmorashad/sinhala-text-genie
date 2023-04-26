@@ -30,7 +30,7 @@ function RoutesWithAuth0Provider() {
       clientId={import.meta.env.VITE_CLIENT_ID}
       authorizationParams={{
         redirect_uri: import.meta.env.VITE_REDIRECT_URI,
-        audience: config.language_model_api_host
+        audience: import.meta.env.VITE_AUDIENCE
       }}
       onRedirectCallback={onRedirectCallback}
 
