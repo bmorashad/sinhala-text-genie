@@ -2,6 +2,7 @@ version: "3"
 
 services:
   backend:
+    image: sinhala-text-genie-backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -9,6 +10,7 @@ services:
       - "8000:80"
 
   frontend:
+    image: sinhala-text-genie-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
