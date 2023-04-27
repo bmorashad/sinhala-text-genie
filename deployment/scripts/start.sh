@@ -14,6 +14,5 @@ if [[ -n "$frontend" ]]; then
   docker image rm -f $frontend
 fi
 
-echo "Build and run the new ones"
 docker compose build
-docker compose up
+docker compose up -d
