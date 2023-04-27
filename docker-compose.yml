@@ -1,16 +1,16 @@
 version: "3"
 
 services:
-  backendprod:
+  backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     ports:
       - "8000:80"
 
-  frontendprod:
+  frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "80:80"
+      - "5000:80"
