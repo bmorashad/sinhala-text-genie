@@ -8,6 +8,7 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:80"
+    restart: unless-stopped
 
   frontend:
     image: sinhala-text-genie-frontend
@@ -16,3 +17,4 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:80"
+    restart: unless-stopped
