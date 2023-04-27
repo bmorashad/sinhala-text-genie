@@ -199,7 +199,7 @@ export default function NextWordPredictor() {
               placeholder="සිංහලෙන් ලියන්න..."
               size="md"
               onKeyUp={(e) => {
-                if(e.key === "Enter") {
+                if(e.key === "Enter" && isInputTextValid(inputText)) {
                   onGenerate()
                 }
               }}
