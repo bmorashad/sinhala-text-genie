@@ -22,6 +22,8 @@ import {IconBallpen, IconCheck, IconCopy, IconRefresh, IconX} from "@tabler/icon
 import React, {useState} from "react";
 import {generateTexts} from "../../services/text-generator.js";
 import {notifications} from "@mantine/notifications";
+import {useAuth0} from "@auth0/auth0-react";
+import {isInputTextValid} from "../../utils/validator.js";
 
 export default function TextGenerator() {
   const [generating, setGenerating] = useState(false)
@@ -29,15 +31,17 @@ export default function TextGenerator() {
   const [textLength, setTextLength] = useState(15);
   const [numOfPreds, setNumOfPreds] = useState(3);
   const [inputText, setInputTexts] = useState("")
+  const { getAccessTokenSilently } = useAuth0()
   const onGenerate = async () => {
     setGenerating(true)
+    let token = await getAccessTokenSilently()
     try {
       const textGenOptions = {
-        prompt: inputText,
+        prompt: inputText.trim(),
         max_num_of_generations: numOfPreds,
         max_gen_len: textLength,
       }
-      const res = await generateTexts({options: textGenOptions})
+      const res = await generateTexts({options: textGenOptions, token})
       const generatedTexts = res.data["generated_texts"]
       setGenerating(false)
       setGeneratorTexts(generatedTexts)
@@ -45,7 +49,7 @@ export default function TextGenerator() {
       console.error(e.message)
       notifications.show({
         title: 'Error occurred while generating texts',
-        message: e.message,
+        message: e.response ? e.response.data.detail.message : e.message,
         withCloseButton: true,
         color: "red",
         icon: <IconX/>,
@@ -133,9 +137,17 @@ export default function TextGenerator() {
               onChange={(event) => setInputTexts(event.currentTarget.value)}
               placeholder="සිංහලෙන් ලියන්න..."
               size="md"
+              onKeyUp={(e) => {
+                if(e.key === "Enter") {
+                  onGenerate()
+                }
+              }}
+              error={isInputTextValid(inputText) ? "" : "Phrase must not exceed 15 words!"}
           />
           <Space h="md"/>
-          <Button leftIcon={<IconRefresh/>} onClick={onGenerate} loading={generating}>Generate</Button>
+          <Button leftIcon={<IconRefresh/>} onClick={onGenerate} loading={generating} disabled={!isInputTextValid(inputText)}>
+            Generate
+          </Button>
           <Space h="md"/>
 
           <Text fw={500} color="gray.7">Generated texts:</Text>

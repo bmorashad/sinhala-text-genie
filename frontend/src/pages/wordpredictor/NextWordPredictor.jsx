@@ -20,6 +20,7 @@ import React, {useState} from "react";
 import {generateNextWordPairs, generateNextWords} from "../../services/text-generator.js";
 import {notifications} from "@mantine/notifications";
 import {useAuth0} from "@auth0/auth0-react";
+import {isInputTextValid} from "../../utils/validator.js";
 
 export default function NextWordPredictor() {
   const PREDICTION_TYPES = [
@@ -56,12 +57,10 @@ export default function NextWordPredictor() {
 
   const onGenerate = async () => {
     setGenerating(true)
-    let token = await getAccessTokenSilently(
-    )
-    console.log(token)
+    let token = await getAccessTokenSilently()
     try {
       let predictionOptions = {
-        prompt: inputText,
+        prompt: inputText.trim(),
         prediction_mode: predictionMode,
         diversity_level: diversityLevel,
       }
@@ -86,7 +85,7 @@ export default function NextWordPredictor() {
       console.error(e.message)
       notifications.show({
         title: 'Error occurred while predicting next words',
-        message: e.message,
+        message: e.response ? e.response.data.detail.message : e.message,
         withCloseButton: true,
         color: "red",
         icon: <IconX/>,
@@ -199,9 +198,16 @@ export default function NextWordPredictor() {
               }}
               placeholder="සිංහලෙන් ලියන්න..."
               size="md"
+              onKeyUp={(e) => {
+                if(e.key === "Enter") {
+                  onGenerate()
+                }
+              }}
+              error={isInputTextValid(inputText) ? "" : "Phrase must not exceed 15 words!"}
           />
           <Space h="md"/>
-          <Button leftIcon={<IconRefresh/>} onClick={() => onGenerate()} loading={generating}>
+          <Button leftIcon={<IconRefresh/>} onClick={() => onGenerate()} loading={generating}
+                  disabled={!isInputTextValid(inputText)}>
             Predict
           </Button>
           <Space h="md"/>

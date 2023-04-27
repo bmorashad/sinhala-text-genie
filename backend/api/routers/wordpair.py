@@ -1,14 +1,15 @@
 from typing import List
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from language_model.textgen import PredictionMode
 from routers.errors.errors import APIException
 from routers.response_models.responses import NextWordPairResponse
+from security.dependencies import validate_token
 from services.textgen import get_next_word_pairs
 
 router = APIRouter()
 
 
-@router.get("/wordpairs")
+@router.get("/wordpairs", dependencies=[Depends(validate_token)])
 async def word_pairs(prompt: str, max_num_of_pairs: int = 3,
                      prediction_mode: PredictionMode = PredictionMode.CONSISTENT,
                      diversity_level: int = 50) -> NextWordPairResponse:

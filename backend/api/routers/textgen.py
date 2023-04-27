@@ -1,14 +1,15 @@
 from typing import List
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from routers.errors.errors import APIException
 from routers.response_models.responses import TextGenResponse
+from security.dependencies import validate_token
 from services.textgen import get_generated_text_list
 
 router = APIRouter()
 
 
-@router.get("/textgen")
+@router.get("/textgen", dependencies=[Depends(validate_token)] )
 async def generate_texts(prompt: str, max_num_of_generations: int = 1,
                          max_gen_len: int = 10) -> TextGenResponse:
     try:
