@@ -1,0 +1,19 @@
+steps:
+  # - name: gcr.io/cloud-builders/git
+  #   args:
+  #     - clone
+  #     - 'https://github.com/bmorashad/sinhala-text-genie'
+  # - name: gcr.io/cloud-builders/gcloud
+  #   args:
+  #     - '-c'
+  #     - >
+  #       gcloud compute scp --recurse scripts cloudbuild@instance-1:~/ --zone us-west4-b	--project t-sunlight-384901 --tunnel-through-iap    
+  #   entrypoint: bash
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      - '-c'
+      - >
+        gcloud compute ssh cloudbuild@instance-1 --zone us-west4-b	--project t-sunlight-384901 --tunnel-through-iap --command "sh scripts/init.sh 
+        &&  cd sinhala-text-genie && echo $(ls) && sh deployment/scripts/deploy.sh"
+    entrypoint: bash
+
