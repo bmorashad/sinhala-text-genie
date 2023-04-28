@@ -20,6 +20,7 @@ jobs:
     name: CD Pipeline
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - id: 'auth'
         uses: 'google-github-actions/auth@v1'
         with: 
@@ -27,7 +28,6 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v1'
 
-      - uses: actions/checkout@v2
 
       - name: Trigger Cloud Build
         run: |
