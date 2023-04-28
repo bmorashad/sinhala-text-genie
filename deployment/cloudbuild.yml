@@ -13,7 +13,7 @@ steps:
     args:
       - '-c'
       - >
-        gcloud compute ssh cloudbuild@instance-1 --zone us-west4-b	--project t-sunlight-384901 --tunnel-through-iap --command "sh scripts/init.sh 
-        &&  cd sinhala-text-genie && echo $(ls) && sh deployment/scripts/deploy.sh"
+        gcloud compute ssh cloudbuild@instance-1 --zone us-west4-b	--project t-sunlight-384901 --tunnel-through-iap --command "cd sinhala-text-genie && git pull && sh deployment/scripts/init.sh 
+        &&  sh deployment/scripts/deploy.sh"
     entrypoint: bash
 
