@@ -16,3 +16,7 @@ fi
 
 docker compose build
 docker compose up -d
+
+echo "Update nginx config"
+sudo cp deployment/nginx/nginx.conf /etc/nginx/nginx.con
+sudo systemctl restart nginx

@@ -58,7 +58,8 @@ function App() {
           theme={{
             fontFamily: "Lexend, sans-serif",
             colors: {
-              'theme-green': ["#02887B", "#02887B", "#02887B", "#02887B", "#02887B", "#02887B", "#02887B", "#02887B", "#02887B", "#02887B"]
+              'theme-green': ["#02887B", "#02887B", "#02887B", "#02887B", "#02887B",
+                "#02887B", "#02887B", "#02887B", "#02887B", "#02887B"],
             }
           }}
           withGlobalStyles

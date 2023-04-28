@@ -1,0 +1,34 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    # paths:
+    #   - 'backend/**'
+    #   - 'frontend/**'
+
+  pull_request:
+    branches:
+      - main
+    # paths:
+    #   - 'backend/**'
+    #   - 'frontend/**'
+
+jobs:
+  deploy:
+    name: CD Pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
+        with: 
+          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v1'
+
+      - uses: actions/checkout@v2
+
+      - name: Trigger Cloud Build
+        run: |
+          gcloud builds submit --config ./deployment/cloudbuild.yml --no-source

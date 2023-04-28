@@ -1,22 +1,22 @@
 import {
-    ActionIcon,
-    Box,
-    Button,
-    Container,
-    CopyButton,
-    Flex,
-    Group,
-    List,
-    NumberInput,
-    Paper,
-    SimpleGrid,
-    Skeleton,
-    Slider,
-    Space,
-    Text,
-    TextInput,
-    ThemeIcon,
-    Tooltip
+  ActionIcon, Badge,
+  Box,
+  Button, Card, Chip,
+  Container,
+  CopyButton,
+  Flex,
+  Group,
+  List,
+  NumberInput,
+  Paper,
+  SimpleGrid,
+  Skeleton,
+  Slider,
+  Space,
+  Text,
+  TextInput,
+  ThemeIcon,
+  Tooltip
 } from "@mantine/core";
 import {IconBallpen, IconCheck, IconCopy, IconRefresh, IconX} from "@tabler/icons-react";
 import React, {useState} from "react";
@@ -24,6 +24,7 @@ import {generateTexts} from "../../services/text-generator.js";
 import {notifications} from "@mantine/notifications";
 import {useAuth0} from "@auth0/auth0-react";
 import {isInputTextValid} from "../../utils/validator.js";
+import Samples from "../../components/sample_sentences/Samples.jsx";
 
 export default function TextGenerator() {
   const [generating, setGenerating] = useState(false)
@@ -84,7 +85,8 @@ export default function TextGenerator() {
             </Container>
           </Text>
         </Box>
-        {/*<Divider my="xs" />*/}
+        <Space h="md"/>
+        <Samples onClick={setInputTexts}/>
         <Space h="md"/>
         <Paper shadow="xs" p="md" withBorder>
           <SimpleGrid cols={3}>
@@ -143,6 +145,9 @@ export default function TextGenerator() {
                 }
               }}
               error={isInputTextValid(inputText) ? "" : "Phrase must not exceed 15 words!"}
+              rightSection={
+                <IconX cursor={"pointer"} size="1.2rem" style={{ display: 'block', opacity: 0.3 }} onClick={() => {setInputTexts("")}}/>
+              }
           />
           <Space h="md"/>
           <Button leftIcon={<IconRefresh/>} onClick={onGenerate} loading={generating} disabled={!isInputTextValid(inputText)}>

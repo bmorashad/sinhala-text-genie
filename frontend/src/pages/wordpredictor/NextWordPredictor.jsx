@@ -1,6 +1,8 @@
 import {
+  ActionIcon,
+  Badge,
   Box,
-  Button,
+  Button, Card, Center,
   Chip,
   Container,
   CopyButton,
@@ -13,14 +15,15 @@ import {
   Slider,
   Space,
   Text,
-  TextInput
+  TextInput, Tooltip
 } from "@mantine/core";
-import {IconRefresh, IconX} from "@tabler/icons-react";
+import {IconRefresh, IconReload, IconX} from "@tabler/icons-react";
 import React, {useState} from "react";
 import {generateNextWordPairs, generateNextWords} from "../../services/text-generator.js";
 import {notifications} from "@mantine/notifications";
 import {useAuth0} from "@auth0/auth0-react";
 import {isInputTextValid} from "../../utils/validator.js";
+import Samples from "../../components/sample_sentences/Samples.jsx";
 
 export default function NextWordPredictor() {
   const PREDICTION_TYPES = [
@@ -112,14 +115,14 @@ export default function NextWordPredictor() {
                 color="gray.7"
           >
             <Container size={940} px={0} sx={{"margin": 0}}>
-
               Simply start typing in Sinhala and it will automatically suggest the next word or word pair.
               Just press the space bar and wait for the predictions to appear.
               Say goodbye to typos and writer's block, and start typing with ease today!
             </Container>
           </Text>
         </Box>
-        {/*<Divider my="xs" />*/}
+        <Space h="md"/>
+        <Samples onClick={setInputText}/>
         <Space h="md"/>
         <Paper shadow="xs" p="md" withBorder>
           {/*<Space h="xs"/>*/}
@@ -204,10 +207,13 @@ export default function NextWordPredictor() {
                 }
               }}
               error={isInputTextValid(inputText) ? "" : "Phrase must not exceed 15 words!"}
+               rightSection={
+            <IconX cursor={"pointer"} size="1.2rem" style={{ display: 'block', opacity: 0.3 }} onClick={() => {setInputText("")}}/>
+      }
           />
           <Space h="md"/>
           <Button leftIcon={<IconRefresh/>} onClick={() => onGenerate()} loading={generating}
-                  disabled={!isInputTextValid(inputText)}>
+                  disabled={!isInputTextValid(inputText)} variant={"filled"}>
             Predict
           </Button>
           <Space h="md"/>
