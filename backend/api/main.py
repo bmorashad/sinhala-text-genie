@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from fastapi.exceptions import RequestValidationError
 from starlette.middleware.cors import CORSMiddleware
 from config import settings
-from routers import nextword, textgen, wordpair
+from routers import nextword, textgen, wordpair, random_sample
 from routers.errors.errors import APIException
 from routers.errors.error_handlers import handle_api_exception, handle_request_validation_error
 
@@ -49,6 +49,7 @@ app.add_exception_handler(RequestValidationError, handle_request_validation_erro
 app.include_router(nextword.router)
 app.include_router(textgen.router)
 app.include_router(wordpair.router)
+app.include_router(random_sample.router)
 
 if __name__ == "__main__":
     uvicorn.run(

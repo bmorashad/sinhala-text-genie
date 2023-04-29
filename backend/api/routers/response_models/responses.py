@@ -32,3 +32,7 @@ class TextGenResponse(BaseModel):
     generated_texts: List[str]
     max_gen_len: int
     max_num_of_generations: int
+
+class RandomTextResponse(BaseModel):
+    text_list: List[str]
+    len: int

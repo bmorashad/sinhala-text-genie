@@ -7,6 +7,8 @@ import numpy as np
 from tensorflow.keras.models import load_model
 import joblib
 from tensorflow.keras.layers import TextVectorization
+
+from language_model.sinhala_nlp.preprocessor import clean_text_corpus, tokenize, clean_tokenized_text_list
 from language_model.util import constants
 import pickle
 import keras_nlp
@@ -38,6 +40,15 @@ def trim_prompt_to_max_len(prompt):
         count_diff = word_count - 15
         prompt = trim_start_of_line(prompt, count_diff + 1)
     return prompt
+
+with open(constants.DATA_FILE, encoding='utf-8') as f:
+    texts = f.read()
+
+texts = clean_text_corpus(texts)
+text_list = tokenize(texts)
+# Due to hardware limitation limiting the corpus size
+text_list = text_list[:250000]
+text_list = clean_tokenized_text_list(text_list)
 
 index_lookup = joblib.load(constants.INDEX_LOOKUP_FILE)
 model = load_model(constants.MODEL_FILE)
@@ -126,6 +137,10 @@ def predict_next_word_pairs(prompt: str, num_of_words=3, prediction_mode=Predict
         top_word_pairs.append(word + " " + second_word)
 
     return list((filter(None, top_word_pairs)))
+
+def random_text(len=10) -> str:
+    random_sentence = ' '.join(random.choice(text_list).replace('\n', ' ').split(' ')[:len])
+    return random_sentence
 
 
 if __name__ == "__main__":
