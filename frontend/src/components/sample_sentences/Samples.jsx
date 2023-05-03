@@ -7,7 +7,7 @@ import {useAuth0} from "@auth0/auth0-react";
 
 export default function Samples({onClick}) {
   const NUM_OF_SAMPLES = 6
-  const SAMPLE_LEN = 6
+  const SAMPLE_LEN = 4
   const { getAccessTokenSilently } = useAuth0()
   const [randomTextList, setRandomTextList] = useState([])
   const [reloading, setReloading] = useState(false)
