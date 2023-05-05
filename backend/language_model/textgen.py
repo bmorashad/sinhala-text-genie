@@ -8,7 +8,7 @@ from tensorflow.keras.models import load_model
 import joblib
 from tensorflow.keras.layers import TextVectorization
 
-from language_model.sinhala_nlp.preprocessor import clean_text_corpus, tokenize, clean_tokenized_text_list
+from language_model.sinhala_nlp.preprocessor import clean_text_corpus, tokenize, clean_tokenized_text_list, clean_prompt
 from language_model.util import constants
 import pickle
 import keras_nlp
@@ -94,9 +94,10 @@ def _generate_text(prompt, response_length):
 
 @_validate_prompt
 def generate_text(prompt, num_of_text=1, response_length=15):
+    cprompt = clean_prompt(prompt)
     generated_text_list = []
     for i in range(num_of_text):
-        text = _generate_text(prompt, response_length)
+        text = _generate_text(cprompt, response_length)
         generated_text_list.append(text)
     return generated_text_list
 
@@ -104,9 +105,10 @@ def generate_text(prompt, num_of_text=1, response_length=15):
 @_validate_prompt
 def predict_next_words(prompt: str, num_of_words=3, prediction_mode=PredictionMode.CONSISTENT,
                        diversity_level=50) -> List[str]:
-    tokenized_prompt = vectorize_layer([prompt])[:, :-1]
+    cprompt = clean_prompt(prompt)
+    tokenized_prompt = vectorize_layer([cprompt])[:, :-1]
     predictions = model.predict([tokenized_prompt], verbose=0)
-    sample_index = len(prompt.strip().split()) - 1
+    sample_index = len(cprompt.strip().split()) - 1
     k = num_of_words
 
     # This predicts "diversity_level" number of words and returns a randomly chosen subset of predicted words of size
@@ -124,10 +126,11 @@ def predict_next_words(prompt: str, num_of_words=3, prediction_mode=PredictionMo
 @_validate_prompt
 def predict_next_word_pairs(prompt: str, num_of_words=3, prediction_mode=PredictionMode.CONSISTENT,
                             diversity_level=50) -> List[str]:
-    top_first_words = predict_next_words(prompt, num_of_words, prediction_mode, diversity_level)
+    cprompt = clean_prompt(prompt)
+    top_first_words = predict_next_words(cprompt, num_of_words, prediction_mode, diversity_level)
     top_word_pairs = []
     for word in top_first_words:
-        new_prompt = prompt + " " + word
+        new_prompt = cprompt + " " + word
         # This is to make sure that after adding the next word, that it doesn't exceed the max len
         new_prompt = trim_prompt_to_max_len(new_prompt)
         top_second_words = predict_next_words(new_prompt, num_of_words, prediction_mode)

@@ -96,5 +96,18 @@ def clean_tokenized_text_list(text_list):
     text_list = list(filter(lambda x: (len(x.strip().split(" ")) > 1 and len(x) > 7), text_list))
     return text_list
 
+def clean_prompt(prompt):
+    cprompt = normalize_text(prompt)
+    cprompt = remove_lone_puntuations(cprompt)
+    cprompt = add_space_after_puntuation(cprompt)
+    cprompt = remove_space_before_puntuation(cprompt)
+    cprompt = remove_english_text(cprompt)
+    cprompt = clean_special_chars(cprompt)
+    cprompt = remove_extra_spaces(cprompt)
+    cprompt = remove_extra_puntuations(cprompt)
+    cprompt = remove_number(cprompt)
+    cprompt = cprompt.strip()
+    return cprompt
+
 
 
