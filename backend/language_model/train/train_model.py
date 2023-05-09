@@ -4,11 +4,11 @@ from tensorflow import keras
 import keras_nlp
 import numpy as np
 from tensorflow.keras.callbacks import ModelCheckpoint
-from ..sinhala_nlp.preprocessor import clean_text_corpus, tokenize, \
-    clean_tokenized_text_list, custom_standardization
+from language_model.sinhala_nlp.preprocessor import clean_text_corpus, tokenize, \
+    clean_tokenized_text_list
 from tensorflow.keras.layers import TextVectorization
 import random
-from ..util import constants
+from language_model.util import constants
 import joblib
 
 with open(constants.DATA_FILE, encoding='utf-8') as f:
@@ -17,7 +17,7 @@ with open(constants.DATA_FILE, encoding='utf-8') as f:
 texts = clean_text_corpus(texts)
 text_list = tokenize(texts)
 # Due to hardware limitation limiting the corpus size
-text_list = text_list[:250000]
+text_list = text_list[:300000]
 text_list = clean_tokenized_text_list(text_list)
 
 length = len(text_list)
@@ -28,7 +28,6 @@ text_valid = text_list[int(0.85 * length):]
 maxlen = constants.MAX_LEN
 
 vectorize_layer = TextVectorization(
-    standardize=custom_standardization,
     output_mode="int",
     output_sequence_length=maxlen + 1,
 )
